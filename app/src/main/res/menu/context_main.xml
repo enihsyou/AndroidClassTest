@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  tools:context="com.enihsyou.map.baidu.MainActivity">
+
+  <item
+    android:id="@+id/action_map_mode_normal"
+    android:title="@string/menu_context_normal_mode" />
+  <item
+    android:id="@+id/action_map_mode_following"
+    android:title="@string/menu_context_following_mode" />
+  <item
+    android:id="@+id/action_map_mode_compass"
+    android:title="@string/menu_context_compass_mode" />
+  <item
+    android:id="@+id/action_map_overlay"
+    android:title="@string/action_map_display_overlay" />
+</menu>

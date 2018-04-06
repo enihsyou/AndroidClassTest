@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  tools:context="com.enihsyou.map.baidu.MainActivity">
+  <group>
+    <item
+      android:id="@+id/action_map_normal"
+      android:title="@string/action_map_normal"
+      app:showAsAction="never" />
+    <item
+      android:id="@+id/action_map_satellite"
+      android:title="@string/action_map_satellite"
+      app:showAsAction="never" />
+  </group>
+  <group android:checkableBehavior="all">
+    <item
+      android:id="@+id/action_map_traffic"
+      android:title="@string/action_map_traffic" />
+    <item
+      android:id="@+id/action_map_heat"
+      android:title="@string/action_map_heat"/>
+  </group>
+
+</menu>

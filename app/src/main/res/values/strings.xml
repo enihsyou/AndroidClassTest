@@ -1,0 +1,11 @@
+<resources>
+  <string name="app_name">百度地图SDK测试</string>
+  <string name="action_map_normal">普通地图</string>
+  <string name="action_map_satellite">卫星地图</string>
+  <string name="action_map_traffic">交通地图</string>
+  <string name="action_map_heat">热力图</string>
+  <string name="menu_context_normal_mode">普通模式</string>
+  <string name="menu_context_following_mode">跟随模式</string>
+  <string name="menu_context_compass_mode">罗盘模式</string>
+  <string name="action_map_display_overlay">显示覆盖物</string>
+</resources>
