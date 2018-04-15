@@ -1,0 +1,7 @@
+<resources>
+  <string name="app_name">MusicPlayer</string>
+  <string name="title_activity_main">MainActivity</string>
+  <string name="title_activity_local">本地资源</string>
+  <string name="title_activity_video">播放视频</string>
+  <string name="title_activity_pics">图片流</string>
+</resources>
