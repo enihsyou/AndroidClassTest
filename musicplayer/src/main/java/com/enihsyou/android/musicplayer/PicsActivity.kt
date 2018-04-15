@@ -2,6 +2,7 @@ package com.enihsyou.android.musicplayer
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.view.LayoutInflater
@@ -33,6 +34,7 @@ class PicsActivity : AppCompatActivity() {
         super.onPostCreate(savedInstanceState)
         pics_recycler?.apply {
             adapter = EverythingPicsListAdapter(items)
+            layoutManager = LinearLayoutManager(ctx).apply { orientation = LinearLayoutManager.HORIZONTAL }
         }
     }
 
@@ -74,7 +76,7 @@ class PicsActivity : AppCompatActivity() {
         }
 
         apiService.search(
-            "D:/Pictures/blur file:$query ext:jpg|ext:png",
+            "D:/Pictures/blur $query ext:jpg|ext:png",
             onSuccess,
             { items.clear().also { pics_recycler.adapter.notifyDataSetChanged() } }
         )
@@ -114,11 +116,11 @@ private class EverythingPicsListAdapter(
         fun bind(file: EverythingFile) {
             Picasso.get()
                 .load(file.url)
-                .also { println("load ${file.url}") }
+                //.also { println("load ${file.url}") }
                 .fit()
                 .centerInside()
                 .into(image)
-            title.text = file.name
+            title.text = file.name.take(50)
         }
     }
 }

@@ -92,7 +92,6 @@ class LocalActivity : AppCompatActivity() {
             onSuccess, onError
         )
 
-
 //        val onSuccess2: (Response<List<EverythingFile>>) -> Unit = {
 //            items.clear()
 //            // nullable
@@ -101,7 +100,7 @@ class LocalActivity : AppCompatActivity() {
 //        }
 //
 //        val onError2: (Throwable) -> Unit = { items.clear().also { local_recycler.adapter.notifyDataSetChanged() } }
-
+//
 //        apiService_retrofit.search(
 //            "path:file:$query ext:mp4|ext:mkv|ext:mp3"
 //        ).enqueue(onSuccess2, onError2)

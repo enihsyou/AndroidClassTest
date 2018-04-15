@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
 
         /*https://github.com/Dash-Industry-Forum/dash-live-source-simulator/wiki/Test-URLs*/
         val live_url =
-            "http://video-weaver.lax03.hls.ttvnw.net/v1/playlist/CqcC7ioz7IZbZiKjzo1Cy9Ntadv4qRu23x8AGTizUah8Wh7HHeTANJROBpxAEwHUFSBrYqAWSQJrJzYsBMLPzPihQEU7_BkZUrGDMZTQPMqD6Gq3zX2HOW-8sofsOJ4nqqvsavJpUxCWBvJwhFbbEJ0E5bMKGCJMi2ONqZS5JEbhjF7yllFlJcGoiLBHfk0HLHwpZ4iokb_NPkbaYa0BB3MxW5YjdvCJNG8Sf-LA9-kCbpe3xkKAANFjDiUEAntZM8EGzYSMzI1fKhk3eall5thfezJeWbQXBfOr1DeAmWihpPHTwG8Vs5wwRyuvzce93yxzJIqJKBgmtL98vxmp3eKrbzH_ELND9ETH7348HJ2v4plUJ9rIfNrxSyMcqtoqO2rw4N-zqs5-ORIQCi5ron3keozAN9feXiJAwRoM1XZlH9w2yVizyxAV.m3u8"
+            "http://video-weaver.lax03.hls.ttvnw.net/v1/playlist/CqcC29Ypg6ft7jOz55uCKwdzqZUQSDaQw4Lx2RNh9Jm3Rb4iawLmLE_lgBJctoZoKwHKyWRUW9zhGwo8ET6W3B5_2MxNQhY1guI88rL0cnnetKrGcRKZG7ZervAn-tOXAfixcfyDpU8F19K2hsqn7fV-udbHM3FN4HMvQblr1j9Tx6Scgxow31vps3Q8dpkv_6Rr5tHFN3sljXlbZjBIIfN61S93cGl-eLnCJMyjP34AQS2EMnD0dm_iGoBLddlX40z4Qpa9NamIlCuNLsaeQs_utfnvA5T6vVrWp6AOt3kpcazKeWRLPjAs7Mp6JMrDtJKLa-rbrOES_9jR1Ye6viCGCkHNthjBBnWvIkQ-ffHGm_jcYWE0SveThvLK5tc-r5udeiMJdCvL4xIQYHMnAb5ItFgZZG69FBWwdRoMdECc9T5139I2wJEi.m3u8"
         btn_local.setOnClickListener { startActivity<LocalActivity>() }
         btn_live.setOnClickListener { startActivity3<VideoActivity>(live_url) }
         btn_pics.setOnClickListener { startActivity<PicsActivity>() }
