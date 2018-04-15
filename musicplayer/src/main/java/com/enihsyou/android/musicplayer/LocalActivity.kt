@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.android.volley.VolleyError
 import kotlinx.android.synthetic.main.activity_local.*
 import org.jetbrains.anko.appcompat.v7.coroutines.onQueryTextListener
 import org.jetbrains.anko.ctx
@@ -17,6 +18,7 @@ import org.jetbrains.anko.toast
 
 class LocalActivity : AppCompatActivity() {
     private lateinit var apiService: EverythingVolleyApiService
+    private lateinit var apiService_retrofit: EverythingRetrofitApiService
     private var items: MutableList<EverythingFile> = mutableListOf()
     private var keyword: String = ""
 
@@ -24,10 +26,13 @@ class LocalActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_local)
         setSupportActionBar(toolbar_local)
-        apiService = EverythingVolleyApiService(ctx)
 
+        /*创建API服务*/
+        apiService = EverythingVolleyApiService(ctx)
+        apiService_retrofit = EverythingRetrofitApiService.create()
     }
 
+    /**在视图创建完成之后，数据也恢复完成之后，绑定数据*/
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         local_recycler.apply {
@@ -39,14 +44,7 @@ class LocalActivity : AppCompatActivity() {
         }
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-        super.onRestoreInstanceState(savedInstanceState)
-        savedInstanceState?.apply {
-            keyword = getString(BUNDLE_SEARCH_KEYWORD) ?: keyword
-            items = getParcelableArrayList(BUNDLE_SEARCH_RESULTS) ?: items
-        }
-    }
-
+    /**屏幕旋转的时候，保存数据*/
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         outState?.apply {
@@ -55,8 +53,18 @@ class LocalActivity : AppCompatActivity() {
         }
     }
 
+    /**屏幕旋转之后，设置为原先数据*/
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        savedInstanceState?.apply {
+            keyword = getString(BUNDLE_SEARCH_KEYWORD) ?: keyword
+            items = getParcelableArrayList(BUNDLE_SEARCH_RESULTS) ?: items
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.local, menu)
+        /*设置搜索框*/
         val searchMenu = menu.findItem(R.id.menu_search).actionView as SearchView
         searchMenu.apply {
             queryHint = "键入搜索"
@@ -69,6 +77,7 @@ class LocalActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+    /**执行搜索操作*/
     private fun searchItem(query: String): Boolean {
         val onSuccess: (List<EverythingFile>) -> Unit = {
             items.clear()
@@ -76,11 +85,26 @@ class LocalActivity : AppCompatActivity() {
             local_recycler.adapter.notifyDataSetChanged()
         }
 
+        val onError: (VolleyError) -> Unit = { items.clear().also { local_recycler.adapter.notifyDataSetChanged() } }
+
         apiService.search(
             "path:file:$query ext:mp4|ext:mkv|ext:mp3",
-            onSuccess,
-            { items.clear().also { local_recycler.adapter.notifyDataSetChanged() } }
+            onSuccess, onError
         )
+
+
+//        val onSuccess2: (Response<List<EverythingFile>>) -> Unit = {
+//            items.clear()
+//            // nullable
+//            items.addAll(it.body() ?: emptyList())
+//            local_recycler.adapter.notifyDataSetChanged()
+//        }
+//
+//        val onError2: (Throwable) -> Unit = { items.clear().also { local_recycler.adapter.notifyDataSetChanged() } }
+
+//        apiService_retrofit.search(
+//            "path:file:$query ext:mp4|ext:mkv|ext:mp3"
+//        ).enqueue(onSuccess2, onError2)
 
         keyword = query
         return true
@@ -101,6 +125,7 @@ private class EverythingFileListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when (viewType) {
+            /*如果没有数据，显示一个空视图*/
             VIEW_TYPE_EMPTY -> object : RecyclerView.ViewHolder(
                 LayoutInflater.from(parent.context).inflate(R.layout.item_empty, parent, false)
             ) {}

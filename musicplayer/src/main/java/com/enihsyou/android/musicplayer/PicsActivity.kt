@@ -24,6 +24,8 @@ class PicsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pics)
         setSupportActionBar(toolbar_pics)
+
+        /*创建API服务*/
         apiService = EverythingVolleyApiService(ctx)
     }
 

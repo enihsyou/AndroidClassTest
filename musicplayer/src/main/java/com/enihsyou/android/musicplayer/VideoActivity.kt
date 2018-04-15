@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.source.ExtractorMediaSource
+import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.dash.DashMediaSource
 import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
@@ -56,35 +57,40 @@ class VideoActivity : AppCompatActivity() {
 
     /*https://medium.com/fungjai/playing-video-by-exoplayer-b97903be0b33*/
     private fun initializePlayer() {
+        /*获取视频URL*/
         val videoUrl = intent.getStringExtra(INTENT_VIDEO_URL_PLAIN)
         val dashUrl = intent.getStringExtra(INTENT_VIDEO_URL_DASH)
         val hlsUrl = intent.getStringExtra(INTENT_VIDEO_URL_HLS)
 
+        /*构建视频数据*/
         val bandwidthMeter = DefaultBandwidthMeter()
         val trackSelector = DefaultTrackSelector(bandwidthMeter)
         val player = ExoPlayerFactory.newSimpleInstance(ctx, trackSelector)
         val dataSourceFactory: DataSource.Factory = DefaultDataSourceFactory(ctx, "enihsyou", bandwidthMeter)
 
-        if (videoUrl != null) {
-            val mediaSource = ExtractorMediaSource.Factory(dataSourceFactory)
-                .createMediaSource(Uri.parse(videoUrl))
-            player.prepare(mediaSource)
-            player.seekTo(playbackPosition)
-        } else if (dashUrl != null) {
-            val mediaSource =
+        val mediaSource: MediaSource = when {
+            videoUrl != null -> {
+                ExtractorMediaSource.Factory(dataSourceFactory)
+                    .createMediaSource(Uri.parse(videoUrl))
+            }
+
+            dashUrl != null  -> {
                 DashMediaSource.Factory(
                     DefaultDashChunkSource.Factory(dataSourceFactory),
                     DefaultDataSourceFactory(ctx, "enihsyou")
-                )
-                    .createMediaSource(Uri.parse(dashUrl))
-            player.prepare(mediaSource)
-        } else if (hlsUrl != null) {
-            val mediaSource =
+                ).createMediaSource(Uri.parse(dashUrl))
+            }
+
+            hlsUrl != null   -> {
                 HlsMediaSource
                     .Factory(DefaultHttpDataSourceFactory("enihsyou"))
                     .createMediaSource(Uri.parse(hlsUrl))
-            player.prepare(mediaSource)
+            }
+
+            else             -> throw NoWhenBranchMatchedException()
         }
+        player.prepare(mediaSource)
+        player.seekTo(playbackPosition)
 
         fullscreen_content.player = player
 

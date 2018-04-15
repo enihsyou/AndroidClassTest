@@ -13,10 +13,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar_main)
 
-//        val live_url = "http://vm2.dashif.org/livesim/utc_direct-head/testpic_2s/Manifest.mpd"
         /*https://github.com/Dash-Industry-Forum/dash-live-source-simulator/wiki/Test-URLs*/
         val live_url =
-            "http://video-weaver.lax03.hls.ttvnw.net/v1/playlist/CqcCd3YcI_-uF1101emLtjdsPSqodzFKwHhbbAZ4FzX9pqBvrn58TTWp7IzYVnQGligOIF6uIYsVs-JHuCReaffa2XqfMYud4DgnhXpeWuulbwP15dAlTueV_phy658c5JvR42Mv101CfpS9DeNm8L33P9FIo18WJCu2G_h_mPq5XLUc5jh9tRpn6QXlxjP8kCH2FHtdbK-w5He0pEyova7YQcxfOxmuxz4sdYXvHQhuCgg80IXkdxf670e_kI3hrALquDFhIqfKAJmbiywF3eeh5HS919iFMKKpo_SCE05p3EBbUdZdPwo2A7KNcVQuQwDdzRnzVdJ4sewYSnLoOnPlsEt_ZrIYxJvSzfQbD1YuiG6ieHgine8nhssTZHm2MjA46hBMFaox4BIQS2FxIZ8MvCSYiTj4gAsSGRoMisOtTMfabjer-2sv.m3u8"
+            "http://video-weaver.lax03.hls.ttvnw.net/v1/playlist/CqcC7ioz7IZbZiKjzo1Cy9Ntadv4qRu23x8AGTizUah8Wh7HHeTANJROBpxAEwHUFSBrYqAWSQJrJzYsBMLPzPihQEU7_BkZUrGDMZTQPMqD6Gq3zX2HOW-8sofsOJ4nqqvsavJpUxCWBvJwhFbbEJ0E5bMKGCJMi2ONqZS5JEbhjF7yllFlJcGoiLBHfk0HLHwpZ4iokb_NPkbaYa0BB3MxW5YjdvCJNG8Sf-LA9-kCbpe3xkKAANFjDiUEAntZM8EGzYSMzI1fKhk3eall5thfezJeWbQXBfOr1DeAmWihpPHTwG8Vs5wwRyuvzce93yxzJIqJKBgmtL98vxmp3eKrbzH_ELND9ETH7348HJ2v4plUJ9rIfNrxSyMcqtoqO2rw4N-zqs5-ORIQCi5ron3keozAN9feXiJAwRoM1XZlH9w2yVizyxAV.m3u8"
         btn_local.setOnClickListener { startActivity<LocalActivity>() }
         btn_live.setOnClickListener { startActivity3<VideoActivity>(live_url) }
         btn_pics.setOnClickListener { startActivity<PicsActivity>() }

@@ -17,9 +17,7 @@ data class EverythingFile(
         parcel.readString(),
         parcel.readString(),
         parcel.readString()
-    ) {
-    }
-
+    )
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
         parcel.writeString(path)
