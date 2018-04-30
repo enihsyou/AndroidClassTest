@@ -1,1 +1,3 @@
-include ':app_baiduMap', ':musicplayer'
+//include ':app_baiduMap'
+//include ':musicplayer'
+include ':yuan_tutorial_server'
