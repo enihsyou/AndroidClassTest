@@ -66,11 +66,11 @@ class YuTeacher(
     val age get() = LocalDate.now().year - birth.year
 
     /**有空的时间，教师的每个时间片*/
-    @OneToMany(cascade = [ALL], fetch = LAZY, orphanRemoval = true)
+    @OneToMany(cascade = [ALL], fetch = LAZY, orphanRemoval = true, mappedBy = "teacher")
     val freeTime: MutableSet<YuWorkStatus> = mutableSetOf()
 
     /**关联到教师的订单*/
-    @OneToMany(cascade = [ALL], fetch = LAZY, orphanRemoval = true)
+    @OneToMany(cascade = [ALL], fetch = LAZY, orphanRemoval = true, mappedBy = "workTime")
     val reservation: MutableSet<YuReceipt> = mutableSetOf()
 
 }
@@ -80,7 +80,11 @@ class YuStudent(
     @NaturalId
     val username: String,
     var password: String
-) : DomainClass()
+) : DomainClass(){
+
+    @OneToMany(cascade = [ALL], fetch = LAZY, orphanRemoval = true, mappedBy = "student")
+    val orders :MutableSet<YuReceipt> = mutableSetOf()
+}
 
 @Entity
 class YuWorkStatus(
@@ -104,7 +108,6 @@ class YuReceipt(
     @ManyToOne(fetch = LAZY)
     val student: YuStudent,
     /**预约的辅导时间*/
-    @JsonBackReference
     @ManyToOne(fetch = LAZY)
     val workTime: YuWorkStatus,
     /**预约的辅导日期*/

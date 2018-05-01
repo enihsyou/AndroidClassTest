@@ -14,6 +14,7 @@ import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHtt
 import org.springframework.session.security.SpringSessionBackedSessionRegistry
 import org.springframework.session.web.http.CookieHttpSessionIdResolver
 import org.springframework.session.web.http.HttpSessionIdResolver
+import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.filter.CommonsRequestLoggingFilter
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
@@ -37,7 +38,17 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
         /*关闭CSRF检测*/
         http
             .csrf().disable()
-            .cors()
+            .cors().configurationSource {
+                CorsConfiguration().apply {
+                    applyPermitDefaultValues()
+                    addAllowedOrigin("127.0.0.1:8080")
+                    addAllowedMethod(HttpMethod.OPTIONS)
+                    addAllowedMethod(HttpMethod.DELETE)
+                    addAllowedMethod(HttpMethod.PATCH)
+                    addAllowedMethod(HttpMethod.PUT)
+                    allowCredentials = true
+                }
+            }
     }
 }
 

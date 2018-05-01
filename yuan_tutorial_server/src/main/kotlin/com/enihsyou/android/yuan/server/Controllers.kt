@@ -1,6 +1,5 @@
 package com.enihsyou.android.yuan.server
 
-import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDate
 
 @RestController
-@CrossOrigin
 @RequestMapping("token")
 class TokenController(val accountService: AccountService) {
 
@@ -29,7 +27,6 @@ class TokenController(val accountService: AccountService) {
 }
 
 @RestController
-@CrossOrigin
 @RequestMapping("account/teacher")
 class TeacherAccountController(
     private val accountService: AccountService,
@@ -62,7 +59,6 @@ class TeacherAccountController(
 }
 
 @RestController
-@CrossOrigin
 @RequestMapping("account/student")
 class StudentAccountController(
     private val accountService: AccountService,
@@ -71,8 +67,8 @@ class StudentAccountController(
 
     @GetMapping
     fun fetchDetail(): YuStudent {
-        val teacher = PermissionUtil.needStudent().name
-        return studentService.loadStudent(teacher)
+        val student = PermissionUtil.needStudent().name
+        return studentService.loadStudent(student)
     }
 
     @PostMapping
@@ -86,10 +82,15 @@ class StudentAccountController(
         val student = PermissionUtil.needStudent().name
         accountService.passwordStudent(passwordDTO, student)
     }
+
+    @GetMapping("reservation")
+    fun getReservation(): YuStudent {
+        //        val student = PermissionUtil.needStudent().name
+        return fetchDetail()
+    }
 }
 
 @RestController
-@CrossOrigin
 @RequestMapping("teachers")
 class TeacherController(
     private val queryService: QueryService

@@ -5,7 +5,8 @@
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 
-POST http://localhost:8999/account/teacher
+# 教师注册
+POST http://{{host}}/account/teacher
 Content-Type: application/json
 
 {
@@ -21,7 +22,8 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:8999/account/student
+# 学生注册
+POST http://{{host}}/account/student
 Content-Type: application/json
 
 {
@@ -30,7 +32,8 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:8999/token/teacher
+# 教师登录
+POST http://{{host}}/token/teacher
 Content-Type: application/json
 
 {
@@ -39,7 +42,8 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:8999/token/student
+# 学生登录
+POST http://{{host}}/token/student
 Content-Type: application/json
 
 {
@@ -48,15 +52,18 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8999/account/teacher
-Cookie: SESSION=N2Q3YjkyYjMtY2U4Yi00N2NlLThkZmEtODhmYTNjNDc2Y2Jj; Path=/; HttpOnly
+# 教师详情
+GET http://{{host}}/account/teacher
+Cookie: SESSION=ZDIwMjgyNzYtMmE5ZS00NmU2LTg0MWQtZDQ1YzBkN2RkOTBk; Path=/; HttpOnly
 
 ###
-GET http://localhost:8999/account/student
+# 学生详情
+GET http://{{host}}/account/student
 Cookie: SESSION=ODg5YTVlNzItNjg3Yi00NzZkLWI4ODAtYTUxZjUyYWViMzc3; Path=/; HttpOnly
 
 ###
-PUT http://localhost:8999/account/teacher/freetime
+# 修改教师空闲时间
+PUT http://{{host}}/account/teacher/freetime
 Content-Type: application/json
 Cookie: SESSION=N2Q3YjkyYjMtY2U4Yi00N2NlLThkZmEtODhmYTNjNDc2Y2Jj; Path=/; HttpOnly
 
@@ -74,13 +81,12 @@ Cookie: SESSION=N2Q3YjkyYjMtY2U4Yi00N2NlLThkZmEtODhmYTNjNDc2Y2Jj; Path=/; HttpOn
 }
 
 ###
-GET http://localhost:8999/teachers?grade=小六&subject=生物
+# 搜索教师，还有其他参数，看Controllers.kt
+GET http://{{host}}/teachers?grade=小六&subject=生物
 
 ###
-GET http://localhost:8999/teachers/1
-
-###
-POST http://localhost:8999/teachers/1/reservation
+# 学生预约教师
+POST http://{{host}}/teachers/1/reservation
 Content-Type: application/json
 Cookie: SESSION=ODg5YTVlNzItNjg3Yi00NzZkLWI4ODAtYTUxZjUyYWViMzc3; Path=/; HttpOnly
 
@@ -88,4 +94,3 @@ Cookie: SESSION=ODg5YTVlNzItNjg3Yi00NzZkLWI4ODAtYTUxZjUyYWViMzc3; Path=/; HttpOn
   "date": "2018-05-01",
   "time": "11-12"
 }
-###

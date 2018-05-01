@@ -1,8 +1,5 @@
 package com.enihsyou.android.yuan.server
 
-import com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import java.math.BigDecimal
 import java.time.LocalDate
 
@@ -49,15 +46,4 @@ data class ReservationDTO(
 
     val dateString get() = LocalDate.parse(date)
     val timeRange get() = time.split("-").map(String::toInt).let { IntRange(it.first(), it.last()) }
-}
-
-fun main(args: Array<String>) {
-    println(
-        jacksonObjectMapper()
-            .registerModule(JavaTimeModule())
-            .disable(WRITE_DATES_AS_TIMESTAMPS)
-            .writeValueAsString(
-                ""
-            )
-    )
 }

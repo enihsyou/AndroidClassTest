@@ -58,8 +58,8 @@ logging:
     org.springframework.web.filter.CommonsRequestLoggingFilter: debug
     com.enihsyou: trace
 server:
-  address: 127.0.0.1
-  port: 8999
+  address: 0.0.0.0
+  port: 8998
 
 ---
 spring:
@@ -67,14 +67,20 @@ spring:
   datasource:
     username: enihsyou
     password: enihsyou
-    url: jdbc:postgresql://localhost:5432/enihsyou
+    url: jdbc:postgresql://localhost:5432/enihsyou?currentSchema=yuan
+
   jpa:
-    hibernate:
-      ddl-auto: none
     show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
 server:
-  address: 127.0.0.1
-  port: 8999
+  address: 0.0.0.0
+  port: 8998
 logging:
   level:
     root: info
