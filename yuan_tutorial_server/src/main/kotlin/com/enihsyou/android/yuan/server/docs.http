@@ -1,0 +1,81 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+
+POST http://localhost:8999/account/teacher
+Content-Type: application/json
+
+{
+  "username": "teacher1",
+  "password": "111",
+  "grade": "小六",
+  "subject": "生物",
+  "name": "喵喵喵",
+  "birth": "2018-05-01",
+  "phone": "123456789",
+  "price": 100,
+  "introduction": "我可去你x的吧"
+}
+
+###
+POST http://localhost:8999/account/student
+Content-Type: application/json
+
+{
+  "username": "student1",
+  "password": "111"
+}
+
+###
+POST http://localhost:8999/token/teacher
+Content-Type: application/json
+
+{
+  "username": "teacher1",
+  "password": "111"
+}
+
+###
+POST http://localhost:8999/token/student
+Content-Type: application/json
+
+{
+  "username": "student1",
+  "password": "111"
+}
+
+###
+GET http://localhost:8999/account/teacher
+Cookie: SESSION=N2Q3YjkyYjMtY2U4Yi00N2NlLThkZmEtODhmYTNjNDc2Y2Jj; Path=/; HttpOnly
+
+###
+GET http://localhost:8999/account/student
+
+
+###
+PUT http://localhost:8999/account/teacher/freetime
+Content-Type: application/json
+Cookie: SESSION=N2Q3YjkyYjMtY2U4Yi00N2NlLThkZmEtODhmYTNjNDc2Y2Jj; Path=/; HttpOnly
+
+{
+  "freetime": [
+    {
+      "data": "2018-05-01",
+      "start": 10,
+      "end": 11
+    },
+    {
+      "data": "2018-05-01",
+      "start": 11,
+      "end": 12
+    }
+  ]
+}
+
+###
+GET http://localhost:8999/teachers?grade=小六&subject=生物
+
+###

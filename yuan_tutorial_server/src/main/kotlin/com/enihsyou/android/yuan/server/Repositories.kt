@@ -12,6 +12,9 @@ interface YuTeacherRepository : JpaRepository<YuTeacher, Long> {
 fun YuTeacherRepository.loadByUsername(username: Username): YuTeacher =
     findByUsername(username) ?: throw UsernameNotFoundException(username)
 
+fun YuTeacherRepository.loadById(id: Long): YuTeacher =
+    findById(id).orElseThrow { UsernameNotFoundException("") }
+
 @Repository
 interface YuStudentRepository : JpaRepository<YuStudent, Long> {
 
@@ -21,8 +24,14 @@ interface YuStudentRepository : JpaRepository<YuStudent, Long> {
 fun YuStudentRepository.loadByUsername(username: Username): YuStudent =
     findByUsername(username) ?: throw UsernameNotFoundException(username)
 
+fun YuStudentRepository.loadById(id: Long): YuStudent =
+    findById(id).orElseThrow { UsernameNotFoundException("") }
+
 @Repository
-interface YuWorkStatusRepository : JpaRepository<YuWorkStatus, Long>
+interface YuWorkStatusRepository : JpaRepository<YuWorkStatus, Long> {
+
+    fun findByTeacher(teacher: YuTeacher): List<YuWorkStatus>
+}
 
 @Repository
 interface YuReceiptRepository : JpaRepository<YuReceipt, Long>

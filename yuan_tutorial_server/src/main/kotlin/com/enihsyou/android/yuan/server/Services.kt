@@ -3,42 +3,137 @@ package com.enihsyou.android.yuan.server
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 
 @Service
 class AccountService(
-    val authenticationProvider: UserAuthenticationProvider,
-    val teacherRepository: YuTeacherRepository,
-    val studentRepository: YuStudentRepository
+    private val authenticationProvider: UserAuthenticationProvider,
+    private val teacherRepository: YuTeacherRepository,
+    private val studentRepository: YuStudentRepository
 ) {
 
-    fun createTeacher(teacherRegistrationDTO: TeacherRegistrationDTO) {}
-    fun createStudent(studentRegistrationDTO: StudentRegistrationDTO) {}
-    fun loginTeacher(loginDTO: LoginDTO) {}
-    fun loginStudent(loginDTO: LoginDTO) {}
-    fun passwordTeacher(passwordDTO: PasswordDTO) {}
-    fun passwordStudent(passwordDTO: PasswordDTO) {}
+    fun createTeacher(teacherRegistrationDTO: TeacherRegistrationDTO): YuTeacher {
+        teacherRepository.findByUsername(teacherRegistrationDTO.username)
+            ?.run { throw UsernameAlreadyExistException(username) }
+        val password_ = PasswordUtil.encodePassword(teacherRegistrationDTO.password)
+        val newTeacher = teacherRegistrationDTO
+            .run { YuTeacher(username, password_, grade, subject, name, birth, phone, price, introduction) }
+        return teacherRepository.save(newTeacher)
+    }
+
+    fun createStudent(studentRegistrationDTO: StudentRegistrationDTO): YuStudent {
+        studentRepository.findByUsername(studentRegistrationDTO.username)
+            ?.run { throw UsernameAlreadyExistException(username) }
+        val password_ = PasswordUtil.encodePassword(studentRegistrationDTO.password)
+        val newStudent = studentRegistrationDTO.run { YuStudent(username, password_) }
+        return studentRepository.save(newStudent)
+    }
+
+    fun loginTeacher(loginDTO: LoginDTO): YuTeacher {
+        val (username, password) = loginDTO
+        SecurityContextHolder.getContext().authentication =
+            authenticationProvider.authenticateTeacher(UsernamePasswordAuthenticationToken(username, password))
+        return teacherRepository.loadByUsername(username)
+    }
+
+    fun loginStudent(loginDTO: LoginDTO): YuStudent {
+        val (username, password) = loginDTO
+        SecurityContextHolder.getContext().authentication =
+            authenticationProvider.authenticateStudent(UsernamePasswordAuthenticationToken(username, password))
+        return studentRepository.loadByUsername(username)
+    }
+
+    fun passwordTeacher(passwordDTO: PasswordDTO, username: String) {
+        val teacher = teacherRepository.loadByUsername(username)
+        PasswordUtil.checkEquality(passwordDTO.old, teacher.password)
+        teacher.password = PasswordUtil.encodePassword(passwordDTO.new)
+    }
+
+    fun passwordStudent(passwordDTO: PasswordDTO, username: String) {
+        val student = studentRepository.loadByUsername(username)
+        PasswordUtil.checkEquality(passwordDTO.old, student.password)
+        student.password = PasswordUtil.encodePassword(passwordDTO.new)
+    }
 }
 
 @Service
-class QueryService {
+class TeacherService(
+    private val teacherRepository: YuTeacherRepository,
+    private val workStatusRepository: YuWorkStatusRepository
+) {
 
+    fun replaceFreetime(teacherFreeTimeDTO: TeacherFreeTimeDTO, username: String) {
+        val teacher = teacherRepository.loadByUsername(username)
+        val map = teacherFreeTimeDTO.freetime.map {
+            YuWorkStatus(teacher, it.start, it.end)
+        }
+        teacher.freeTime.clear()
+        teacher.freeTime.addAll(map)
+        teacherRepository.save(teacher)
+    }
+
+    fun loadTeacher(username: String): YuTeacher {
+        return teacherRepository.loadByUsername(username)
+    }
 }
+
+@Service
+class StudentService(
+    private val studentRepository: YuStudentRepository,
+    private val workStatusRepository: YuWorkStatusRepository
+) {
+
+
+    fun loadStudent(username: String): YuStudent {
+        return studentRepository.loadByUsername(username)
+    }
+}
+
+@Service
+class QueryService(
+    private val teacherRepository: YuTeacherRepository,
+    private val studentRepository: YuStudentRepository
+) {
+
+    fun detailTeacher(id: Long) = teacherRepository.loadById(id)
+    fun queryTeachers(
+        grade: String?, // 年级
+        subject: String?, // 科目
+        name: String?, // 姓名
+        age: Int?, // 年龄
+        date: LocalDate?, // 辅导日期
+        timeInterval: IntRange?, // 辅导时间
+        priceInterval: IntRange? // 价格区间
+    ): List<YuTeacher> = teacherRepository.findAll().toList().asSequence()
+        .filter { grade?.run { it.grade == grade } != false }
+        .filter { subject?.run { it.subject == subject } != false }
+        .filter { name?.run { it.name == name } != false }
+        .filter { age?.run { it.age == age } != false }
+        .filter { date?.run { it.reservation.filter { it.date == date }.none() } != false }
+        .filter { timeInterval?.run { it.reservation.filter { it.workTime.range == timeInterval }.none() } != false }
+        .filter { priceInterval?.run { it.price.toInt() in this } != false }
+        .toList()
+}
+
+@Service
+class ReservationService(
+    private val teacherRepository: YuTeacherRepository
+)
 
 @Component
 class UserAuthenticationProvider(
-    val yuTeacherRepository: YuTeacherRepository,
-    val yuStudentRepository: YuStudentRepository
+    private val yuTeacherRepository: YuTeacherRepository,
+    private val yuStudentRepository: YuStudentRepository
 ) {
 
-    fun authenticateTeacher(authentication: Authentication) {
+    fun authenticateTeacher(authentication: Authentication) =
         authenticate(authentication, "Teacher")
-    }
 
-    fun authenticateStudent(authentication: Authentication) {
+    fun authenticateStudent(authentication: Authentication) =
         authenticate(authentication, "Student")
-    }
 
     private fun authenticate(authentication: Authentication, role: String): Authentication {
         val inputUsername = authentication.name as String

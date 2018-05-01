@@ -1,21 +1,51 @@
 package com.enihsyou.android.yuan.server
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import org.hibernate.annotations.NaturalId
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.persistence.CascadeType.ALL
 import javax.persistence.Entity
+import javax.persistence.FetchType.LAZY
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.ManyToOne
+import javax.persistence.MappedSuperclass
 import javax.persistence.OneToMany
+
+@MappedSuperclass
+open class DomainClass {
+
+    @Id
+    @GeneratedValue
+    val id: Long = 0
+
+    val createdTime: LocalDateTime = LocalDateTime.now()
+
+    @Suppress("ConstantConditionIf")
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as DomainClass
+
+        if (id == 0L || other.id == 0L) return false
+        if (id != other.id) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
+    }
+}
 
 @Entity
 class YuTeacher(
     @NaturalId
     val username: String,
-    val password: String,
+    var password: String,
     /**年级*/
     val grade: String,
     /**学科*/
@@ -26,65 +56,59 @@ class YuTeacher(
     val birth: LocalDate,
     /**手机号*/
     val phone: String,
+    /**辅导价格*/
+    val price: BigDecimal,
     /**简介*/
     val introduction: String
-) {
-
-    @Id
-    @GeneratedValue
-    val id: Long = 0
+) : DomainClass() {
 
     /**年龄*/
     val age get() = LocalDate.now().year - birth.year
 
-    @OneToMany(cascade = [ALL])
-    val freetime: Map<String, YuWorkStatus> = mapOf()
+    /**有空的时间，教师的每个时间片*/
+    @OneToMany(cascade = [ALL], fetch = LAZY, orphanRemoval = true)
+    val freeTime: MutableSet<YuWorkStatus> = mutableSetOf()
 
-    @OneToMany
-    val reservation: List<YuReceipt> = listOf()
+    /**关联到教师的订单*/
+    @OneToMany(cascade = [ALL], fetch = LAZY, orphanRemoval = true)
+    val reservation: MutableSet<YuReceipt> = mutableSetOf()
+
 }
 
 @Entity
 class YuStudent(
     @NaturalId
     val username: String,
-    val password: String
-) {
-
-    @Id
-    @GeneratedValue
-    val id: Long = 0
-}
+    var password: String
+) : DomainClass()
 
 @Entity
 class YuWorkStatus(
-    @ManyToOne
+    @JsonBackReference
+    @ManyToOne(fetch = LAZY)
     val teacher: YuTeacher,
-    val date: LocalDate,
+    /**从几点开始*/
     val start: Int,
-    val end: Int,
-    val isFree: Boolean,
-    val price: BigDecimal
-) {
+    /**到几点结束*/
+    val end: Int
+) : DomainClass() {
 
-    @Id
-    @GeneratedValue
-    val id: Long = 0
+    val range
+        get() = start..end
 }
 
 @Entity
 class YuReceipt(
-    @ManyToOne
+    /**被辅导的学生*/
+    @JsonBackReference
+    @ManyToOne(fetch = LAZY)
     val student: YuStudent,
-    @ManyToOne
+    /**预约的辅导时间*/
+    @JsonBackReference
+    @ManyToOne(fetch = LAZY)
     val workTime: YuWorkStatus,
-    val isPaid: Boolean,
-    val createdTime: LocalDateTime
-) {
-
-    val price get() = workTime.price
-
-    @Id
-    @GeneratedValue
-    val id: Long = 0
-}
+    /**预约的辅导日期*/
+    val date: LocalDate,
+    /**是否支付成功*/
+    val isPaid: Boolean
+) : DomainClass()
