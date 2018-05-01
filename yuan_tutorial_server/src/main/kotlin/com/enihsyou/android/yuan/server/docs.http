@@ -53,7 +53,7 @@ Cookie: SESSION=N2Q3YjkyYjMtY2U4Yi00N2NlLThkZmEtODhmYTNjNDc2Y2Jj; Path=/; HttpOn
 
 ###
 GET http://localhost:8999/account/student
-
+Cookie: SESSION=ODg5YTVlNzItNjg3Yi00NzZkLWI4ODAtYTUxZjUyYWViMzc3; Path=/; HttpOnly
 
 ###
 PUT http://localhost:8999/account/teacher/freetime
@@ -63,12 +63,10 @@ Cookie: SESSION=N2Q3YjkyYjMtY2U4Yi00N2NlLThkZmEtODhmYTNjNDc2Y2Jj; Path=/; HttpOn
 {
   "freetime": [
     {
-      "data": "2018-05-01",
       "start": 10,
       "end": 11
     },
     {
-      "data": "2018-05-01",
       "start": 11,
       "end": 12
     }
@@ -78,4 +76,16 @@ Cookie: SESSION=N2Q3YjkyYjMtY2U4Yi00N2NlLThkZmEtODhmYTNjNDc2Y2Jj; Path=/; HttpOn
 ###
 GET http://localhost:8999/teachers?grade=小六&subject=生物
 
+###
+GET http://localhost:8999/teachers/1
+
+###
+POST http://localhost:8999/teachers/1/reservation
+Content-Type: application/json
+Cookie: SESSION=ODg5YTVlNzItNjg3Yi00NzZkLWI4ODAtYTUxZjUyYWViMzc3; Path=/; HttpOnly
+
+{
+  "date": "2018-05-01",
+  "time": "11-12"
+}
 ###

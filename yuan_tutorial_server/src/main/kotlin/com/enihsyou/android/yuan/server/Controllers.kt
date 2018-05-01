@@ -71,7 +71,7 @@ class StudentAccountController(
 
     @GetMapping
     fun fetchDetail(): YuStudent {
-        val teacher = PermissionUtil.needTeacher().name
+        val teacher = PermissionUtil.needStudent().name
         return studentService.loadStudent(teacher)
     }
 
@@ -120,5 +120,7 @@ class TeacherController(
 
     @PostMapping("{id}/reservation")
     fun buyTeacher(@PathVariable id: Long, @RequestBody reservationDTO: ReservationDTO) {
+        val student = PermissionUtil.needStudent().name
+        queryService.reservation(id, reservationDTO, student)
     }
 }

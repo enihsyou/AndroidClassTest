@@ -116,6 +116,18 @@ class QueryService(
         .filter { timeInterval?.run { it.reservation.filter { it.workTime.range == timeInterval }.none() } != false }
         .filter { priceInterval?.run { it.price.toInt() in this } != false }
         .toList()
+
+    fun reservation(teacherId: Long, reservationDTO: ReservationDTO, studentName: String) {
+        val teacher = teacherRepository.loadById(teacherId)
+        val student = studentRepository.loadByUsername(studentName)
+        val date = reservationDTO.dateString
+        val time = reservationDTO.timeRange
+        val freetime = teacher.freeTime.firstOrNull { it.range == time } ?: throw NotFoundException()
+
+        teacher.reservation.find { it.date == date && it.workTime.range == time }?.run { throw AlreadyUsedException() }
+        teacher.reservation += YuReceipt(student, freetime, date, true)
+        teacherRepository.save(teacher)
+    }
 }
 
 @Service

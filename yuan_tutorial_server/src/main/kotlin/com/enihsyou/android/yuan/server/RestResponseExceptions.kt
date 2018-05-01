@@ -3,6 +3,7 @@ package com.enihsyou.android.yuan.server
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.HttpStatus.FORBIDDEN
+import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -14,7 +15,6 @@ abstract class RestRuntimeException(
     message: String? = null
 ) : RuntimeException(message)
 
-/*用户相关*/
 class UsernameNotFoundException(username: Username) : RestRuntimeException(BAD_REQUEST, "用户[$username]不存在")
 
 class UsernameAlreadyExistException(username: Username) : RestRuntimeException(BAD_REQUEST, "用户名[$username]已存在")
@@ -24,6 +24,10 @@ class BadCredentialsException : RestRuntimeException(BAD_REQUEST, "用户名不�
 class PermissionNotGrantedException(username: Username) : RestRuntimeException(FORBIDDEN, "用户[$username]无此权限")
 
 class NeedLoginException : RestRuntimeException(FORBIDDEN, "需要登录")
+
+class NotFoundException : RestRuntimeException(NOT_FOUND, "没这玩意")
+
+class AlreadyUsedException : RestRuntimeException(FORBIDDEN, "已经被预约")
 
 /**
 {

@@ -45,7 +45,11 @@ data class TeacherFreeTimeDTO(
 data class ReservationDTO(
     val date: String,
     val time: String
-)
+) {
+
+    val dateString get() = LocalDate.parse(date)
+    val timeRange get() = time.split("-").map(String::toInt).let { IntRange(it.first(), it.last()) }
+}
 
 fun main(args: Array<String>) {
     println(
