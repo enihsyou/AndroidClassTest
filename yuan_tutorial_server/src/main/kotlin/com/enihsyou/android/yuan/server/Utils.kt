@@ -1,16 +1,19 @@
 package com.enihsyou.android.yuan.server
 
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 import kotlin.reflect.KClass
 
 /**密码相关的帮助类*/
+@Component
 object PasswordUtil {
-
+    @Autowired
     private val passwordEncoder = BCryptPasswordEncoder()
 
     /**

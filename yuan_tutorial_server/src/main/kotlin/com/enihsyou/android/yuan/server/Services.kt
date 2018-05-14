@@ -125,8 +125,11 @@ class QueryService(
         val freetime = teacher.freeTime.firstOrNull { it.range == time } ?: throw NotFoundException()
 
         teacher.reservation.find { it.date == date && it.workTime.range == time }?.run { throw AlreadyUsedException() }
-        teacher.reservation += YuReceipt(student, freetime, date, true)
+        val receipt = YuReceipt(student, freetime, date, true)
+        teacher.reservation += receipt
+        student.orders += receipt
         teacherRepository.save(teacher)
+        studentRepository.save(student)
     }
 }
 

@@ -59,13 +59,13 @@ Cookie: SESSION=ZDIwMjgyNzYtMmE5ZS00NmU2LTg0MWQtZDQ1YzBkN2RkOTBk; Path=/; HttpOn
 ###
 # 学生详情
 GET http://{{host}}/account/student
-Cookie: SESSION=ODg5YTVlNzItNjg3Yi00NzZkLWI4ODAtYTUxZjUyYWViMzc3; Path=/; HttpOnly
+Cookie: SESSION=MDA5MzA3ODAtNWNkYi00ZWE4LWI0Y2UtODIxNDM4MTg4Yzcw; Path=/; HttpOnly
 
 ###
 # 修改教师空闲时间
 PUT http://{{host}}/account/teacher/freetime
 Content-Type: application/json
-Cookie: SESSION=N2Q3YjkyYjMtY2U4Yi00N2NlLThkZmEtODhmYTNjNDc2Y2Jj; Path=/; HttpOnly
+Cookie: SESSION=YjFiMTkzNTktMDY5YS00NTQ2LWI3OWItZmJiOWUzMDdjZTk1; Path=/; HttpOnly
 
 {
   "freetime": [
@@ -88,9 +88,46 @@ GET http://{{host}}/teachers?grade=小六&subject=生物
 # 学生预约教师
 POST http://{{host}}/teachers/1/reservation
 Content-Type: application/json
-Cookie: SESSION=ODg5YTVlNzItNjg3Yi00NzZkLWI4ODAtYTUxZjUyYWViMzc3; Path=/; HttpOnly
+Cookie: SESSION=MDA5MzA3ODAtNWNkYi00ZWE4LWI0Y2UtODIxNDM4MTg4Yzcw; Path=/; HttpOnly
 
 {
   "date": "2018-05-01",
   "time": "11-12"
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###
+PUT http://{{host}}/account/teacher/freetime
+Content-Type: application/json
+Cookie: SESSION=YjFiMTkzNTktMDY5YS00NTQ2LWI3OWItZmJiOWUzMDdjZTk1; Path=/; HttpOnly
+
+{
+  "freetime": [
+    {
+      "start": 10,
+      "end": 11
+    },
+    {
+      "start": 11,
+      "end": 12
+    }
+  ]
+}
+
+###

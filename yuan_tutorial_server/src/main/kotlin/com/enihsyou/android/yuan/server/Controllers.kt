@@ -14,12 +14,13 @@ import java.time.LocalDate
 @RequestMapping("token")
 class TokenController(val accountService: AccountService) {
 
-
+    /**使用[LoginDTO.username]为用户名，[LoginDTO.password]为密码，进行教师身份的登录*/
     @PostMapping("teacher")
     fun teacherLogin(@RequestBody loginDTO: LoginDTO): YuTeacher {
         return accountService.loginTeacher(loginDTO)
     }
 
+    /**使用[LoginDTO.username]为用户名，[LoginDTO.password]为密码，进行学生身份的登录*/
     @PostMapping("student")
     fun studentLogin(@RequestBody loginDTO: LoginDTO): YuStudent {
         return accountService.loginStudent(loginDTO)
