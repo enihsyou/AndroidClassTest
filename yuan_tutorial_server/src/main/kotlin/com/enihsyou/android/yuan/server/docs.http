@@ -55,17 +55,17 @@ Content-Type: application/json
 ###
 # 教师详情
 GET http://{{host}}/account/teacher
-Cookie: SESSION=ZDIwMjgyNzYtMmE5ZS00NmU2LTg0MWQtZDQ1YzBkN2RkOTBk; Path=/; HttpOnly
+Cookie: SESSION=NjljNzkyZDUtYzNiMy00ZGMwLWEwMDAtZGQ0YjE4NzUxM2I4; Path=/; HttpOnly
 
 ###
 # 学生详情
 GET http://{{host}}/account/student
-Cookie: SESSION=MDA5MzA3ODAtNWNkYi00ZWE4LWI0Y2UtODIxNDM4MTg4Yzcw; Path=/; HttpOnly
+Cookie: SESSION=MThiNmUyOWEtNTE4ZC00MzE0LThlZGYtZTc3OGIyNTliNjBk; Path=/; HttpOnly
 
 ###
 # 教师修改密码
 PUT http://{{host}}/account/teacher/password
-Cookie: SESSION=ZDIwMjgyNzYtMmE5ZS00NmU2LTg0MWQtZDQ1YzBkN2RkOTBk; Path=/; HttpOnly
+Cookie: SESSION=NjljNzkyZDUtYzNiMy00ZGMwLWEwMDAtZGQ0YjE4NzUxM2I4; Path=/; HttpOnly
 Content-Type: application/json
 
 {
@@ -75,7 +75,7 @@ Content-Type: application/json
 ###
 # 学生修改密码
 PUT http://{{host}}/account/student/password
-Cookie: SESSION=MDA5MzA3ODAtNWNkYi00ZWE4LWI0Y2UtODIxNDM4MTg4Yzcw; Path=/; HttpOnly
+Cookie: SESSION=MThiNmUyOWEtNTE4ZC00MzE0LThlZGYtZTc3OGIyNTliNjBk; Path=/; HttpOnly
 Content-Type: application/json
 
 {
@@ -108,13 +108,13 @@ Cookie: SESSION=YjFiMTkzNTktMDY5YS00NTQ2LWI3OWItZmJiOWUzMDdjZTk1; Path=/; HttpOn
 ###
 # 搜索教师，还有其他参数，看Controllers.kt
 GET http://{{host}}/teachers?
-    grade=小六&
-    subject=生物&
-    name=AAA&
-    age=19&
-    date=2018-04-30&
-    time=17-18&
-    price=100-200
+#    grade=小六&
+#    subject=生物&
+#    name=AAA&
+#    age=19&
+#    date=2018-04-30&
+#    time=17-18&
+#    price=100-200
 
 ###
 # 教师详情
@@ -124,7 +124,7 @@ GET http://{{host}}/teachers/1
 # 学生预约教师
 POST http://{{host}}/teachers/1/reservation
 Content-Type: application/json
-Cookie: SESSION=MDA5MzA3ODAtNWNkYi00ZWE4LWI0Y2UtODIxNDM4MTg4Yzcw; Path=/; HttpOnly
+Cookie: SESSION=MThiNmUyOWEtNTE4ZC00MzE0LThlZGYtZTc3OGIyNTliNjBk; Path=/; HttpOnly
 
 {
   "date": "2018-05-01",

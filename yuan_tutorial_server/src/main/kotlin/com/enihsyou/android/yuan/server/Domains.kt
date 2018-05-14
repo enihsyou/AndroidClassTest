@@ -1,6 +1,7 @@
 package com.enihsyou.android.yuan.server
 
 import com.fasterxml.jackson.annotation.JsonBackReference
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.hibernate.annotations.NaturalId
 import org.springframework.data.jpa.domain.AbstractPersistable
 import java.math.BigDecimal
@@ -12,9 +13,10 @@ import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
 
 @Entity
-class YuTeacher(
+data class YuTeacher(
     @NaturalId
     val username: String,
+    @JsonIgnore
     var password: String,
     /**年级*/
     val grade: String,
@@ -40,7 +42,7 @@ class YuTeacher(
     val freeTime: MutableSet<YuWorkStatus> = mutableSetOf()
 
     /**关联到教师的订单*/
-    @OneToMany(cascade = [ALL], mappedBy = "workTime", orphanRemoval = true)
+    @OneToMany(cascade = [ALL], mappedBy = "teacher")
     val reservation: MutableSet<YuReceipt> = mutableSetOf()
 }
 
@@ -48,10 +50,11 @@ class YuTeacher(
 class YuStudent(
     @NaturalId
     val username: String,
+    @JsonIgnore
     var password: String
 ) : AbstractPersistable<Long>() {
 
-    @OneToMany(cascade = [ALL], orphanRemoval = true, mappedBy = "student")
+    @OneToMany(cascade = [ALL], mappedBy = "student")
     val orders: MutableSet<YuReceipt> = mutableSetOf()
 }
 
@@ -83,4 +86,11 @@ class YuReceipt(
     val date: LocalDate,
     /**是否支付成功*/
     var isPaid: Boolean
-) : AbstractPersistable<Long>()
+) : AbstractPersistable<Long>() {
+
+    @ManyToOne(fetch = LAZY)
+    @JsonBackReference
+    val teacher = workTime.teacher
+
+    val teacherJson get() = teacher.copy().apply { reservation.clear() }
+}

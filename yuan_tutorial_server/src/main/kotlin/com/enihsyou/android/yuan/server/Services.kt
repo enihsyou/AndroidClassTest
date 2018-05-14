@@ -82,8 +82,7 @@ class TeacherService(
 
 @Service
 class StudentService(
-    private val studentRepository: YuStudentRepository,
-    private val workStatusRepository: YuWorkStatusRepository
+    private val studentRepository: YuStudentRepository
 ) {
 
 
@@ -101,7 +100,8 @@ class StudentService(
 @Service
 class QueryService(
     private val teacherRepository: YuTeacherRepository,
-    private val studentRepository: YuStudentRepository
+    private val studentRepository: YuStudentRepository,
+    private val receiptRepository: YuReceiptRepository
 ) {
 
     fun detailTeacher(id: Long) = teacherRepository.loadById(id)
@@ -131,10 +131,12 @@ class QueryService(
         val freetime = teacher.freeTime.firstOrNull { it.range == time } ?: throw NotFoundException()
 
         teacher.reservation.find { it.date == date && it.workTime.range == time }?.run { throw AlreadyUsedException() }
-        val receipt = YuReceipt(student, freetime, date, true)
+        val receipt = YuReceipt(student, freetime, date, false)
+        receiptRepository.save(receipt)
+
         teacher.reservation += receipt
-        student.orders += receipt
         teacherRepository.save(teacher)
+        student.orders += receipt
         studentRepository.save(student)
     }
 }

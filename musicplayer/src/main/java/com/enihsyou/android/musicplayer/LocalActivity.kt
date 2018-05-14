@@ -6,15 +6,11 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.view.LayoutInflater
 import android.view.Menu
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.android.volley.VolleyError
 import kotlinx.android.synthetic.main.activity_local.*
 import org.jetbrains.anko.appcompat.v7.coroutines.onQueryTextListener
 import org.jetbrains.anko.ctx
-import org.jetbrains.anko.sdk25.coroutines.onClick
-import org.jetbrains.anko.toast
 
 class LocalActivity : AppCompatActivity() {
     private lateinit var apiService: EverythingVolleyApiService
@@ -36,11 +32,7 @@ class LocalActivity : AppCompatActivity() {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         local_recycler.apply {
-            adapter = EverythingFileListAdapter(items) { position, _ ->
-                val file = items[position]
-                toast("播放视频「${file.name}」")
-                startActivity<VideoActivity>(file.url)
-            }
+            adapter = EverythingFileListAdapter()
         }
     }
 
@@ -117,50 +109,26 @@ class LocalActivity : AppCompatActivity() {
 }
 
 /*https://www.jianshu.com/p/d6fa7bbe80af*/
-private class EverythingFileListAdapter(
-    private val items: List<EverythingFile>,
-    private val clickListener: ((position: Int, v: View) -> Unit)? = null
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+private class EverythingFileListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when (viewType) {
-            /*如果没有数据，显示一个空视图*/
+        /*如果没有数据，显示一个空视图*/
             VIEW_TYPE_EMPTY -> object : RecyclerView.ViewHolder(
                 LayoutInflater.from(parent.context).inflate(R.layout.item_empty, parent, false)
             ) {}
 
-            else            -> EverythingHolder(
+            else            -> object : RecyclerView.ViewHolder(
                 LayoutInflater.from(parent.context).inflate(R.layout.item_everything, parent, false)
-            )
+            ){}
         }
 
-    override fun getItemCount(): Int = if (items.isEmpty()) 1 else items.size
+    override fun getItemCount(): Int = 20
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
-        when (holder) {
-            is EverythingHolder -> holder.bind(items[position])
-
-            else                -> Unit
-        }
-
-    /*https://stackoverflow.com/a/31671289*/
-    inner class EverythingHolder(val view: View) : RecyclerView.ViewHolder(view) {
-
-        val name: TextView = view.findViewById(R.id.item_text_filename)
-        val size: TextView = view.findViewById(R.id.item_text_filesize)
-
-        init {
-            view.onClick { clickListener?.invoke(adapterPosition, view) }
-        }
-
-        fun bind(file: EverythingFile) {
-            name.text = file.name
-            size.text = file.size
-        }
-    }
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {}
 
     override fun getItemViewType(position: Int): Int =
-        if (items.isEmpty()) VIEW_TYPE_EMPTY else VIEW_TYPE_EVERYTHING
+        if (position % 3 == 0) VIEW_TYPE_EMPTY else VIEW_TYPE_EVERYTHING
 
     companion object {
         const val VIEW_TYPE_EMPTY = 0
