@@ -90,6 +90,12 @@ class StudentService(
     fun loadStudent(username: String): YuStudent {
         return studentRepository.loadByUsername(username)
     }
+
+    fun payOrder(id: Long, username: String): Boolean {
+        val student = loadStudent(username)
+        student.orders.find { it.id == id }?.apply { isPaid = true }
+        return true
+    }
 }
 
 @Service

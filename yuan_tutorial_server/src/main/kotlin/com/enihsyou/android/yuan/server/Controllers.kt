@@ -34,16 +34,15 @@ class TeacherAccountController(
     private val teacherService: TeacherService
 ) {
 
+    @PostMapping
+    fun teacherRegister(@RequestBody teacherRegistrationDTO: TeacherRegistrationDTO): YuTeacher {
+        return accountService.createTeacher(teacherRegistrationDTO)
+    }
+
     @GetMapping
     fun fetchDetail(): YuTeacher {
         val teacher = PermissionUtil.needTeacher().name
         return teacherService.loadTeacher(teacher)
-    }
-
-    @PostMapping
-    fun teacherRegister(@RequestBody teacherRegistrationDTO: TeacherRegistrationDTO): YuTeacher {
-        val teacher = accountService.createTeacher(teacherRegistrationDTO)
-        return teacher
     }
 
     @PutMapping("password")
@@ -66,16 +65,15 @@ class StudentAccountController(
     private val studentService: StudentService
 ) {
 
+    @PostMapping
+    fun studentRegister(@RequestBody studentRegistrationDTO: StudentRegistrationDTO): YuStudent {
+        return accountService.createStudent(studentRegistrationDTO)
+    }
+
     @GetMapping
     fun fetchDetail(): YuStudent {
         val student = PermissionUtil.needStudent().name
         return studentService.loadStudent(student)
-    }
-
-    @PostMapping
-    fun studentRegister(@RequestBody studentRegistrationDTO: StudentRegistrationDTO): YuStudent {
-        val student = accountService.createStudent(studentRegistrationDTO)
-        return student
     }
 
     @PutMapping("password")
@@ -84,10 +82,10 @@ class StudentAccountController(
         accountService.passwordStudent(passwordDTO, student)
     }
 
-    @GetMapping("reservation")
-    fun getReservation(): YuStudent {
-        //        val student = PermissionUtil.needStudent().name
-        return fetchDetail()
+    @PostMapping("orders")
+    fun payOrder(@RequestParam id: Long): Boolean {
+        val student = PermissionUtil.needStudent().name
+        return studentService.payOrder(id, student)
     }
 }
 
@@ -110,14 +108,12 @@ class TeacherController(
         val date_ = date?.let { LocalDate.parse(it) }
         val timeInterval = time?.split("-")?.map(String::toInt)?.let { IntRange(it.first(), it.last()) }
         val priceInterval = price?.split("-")?.map(String::toInt)?.let { IntRange(it.first(), it.last()) }
-        val resultList = queryService.queryTeachers(grade, subject, name, age, date_, timeInterval, priceInterval)
-        return resultList
+        return queryService.queryTeachers(grade, subject, name, age, date_, timeInterval, priceInterval)
     }
 
     @GetMapping("{id}")
     fun detailTeacher(@PathVariable id: Long): YuTeacher {
-        val teacher = queryService.detailTeacher(id)
-        return teacher
+        return queryService.detailTeacher(id)
     }
 
     @PostMapping("{id}/reservation")

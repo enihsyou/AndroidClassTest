@@ -6,6 +6,7 @@
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 
 # 教师注册
+# introduction is nullable
 POST http://{{host}}/account/teacher
 Content-Type: application/json
 
@@ -62,10 +63,30 @@ GET http://{{host}}/account/student
 Cookie: SESSION=MDA5MzA3ODAtNWNkYi00ZWE4LWI0Y2UtODIxNDM4MTg4Yzcw; Path=/; HttpOnly
 
 ###
+# 教师修改密码
+PUT http://{{host}}/account/teacher/password
+Cookie: SESSION=ZDIwMjgyNzYtMmE5ZS00NmU2LTg0MWQtZDQ1YzBkN2RkOTBk; Path=/; HttpOnly
+Content-Type: application/json
+
+{
+  "old": "111",
+  "new": "112"
+}
+###
+# 学生修改密码
+PUT http://{{host}}/account/student/password
+Cookie: SESSION=MDA5MzA3ODAtNWNkYi00ZWE4LWI0Y2UtODIxNDM4MTg4Yzcw; Path=/; HttpOnly
+Content-Type: application/json
+
+{
+  "old": "111",
+  "new": "112"
+}
+###
 # 修改教师空闲时间
 PUT http://{{host}}/account/teacher/freetime
-Content-Type: application/json
 Cookie: SESSION=YjFiMTkzNTktMDY5YS00NTQ2LWI3OWItZmJiOWUzMDdjZTk1; Path=/; HttpOnly
+Content-Type: application/json
 
 {
   "freetime": [
@@ -79,10 +100,25 @@ Cookie: SESSION=YjFiMTkzNTktMDY5YS00NTQ2LWI3OWItZmJiOWUzMDdjZTk1; Path=/; HttpOn
     }
   ]
 }
+###
+# 学生支付订单
+POST http://{{host}}/account/student/orders?id=10
+Cookie: SESSION=YjFiMTkzNTktMDY5YS00NTQ2LWI3OWItZmJiOWUzMDdjZTk1; Path=/; HttpOnly
 
 ###
 # 搜索教师，还有其他参数，看Controllers.kt
-GET http://{{host}}/teachers?grade=小六&subject=生物
+GET http://{{host}}/teachers?
+    grade=小六&
+    subject=生物&
+    name=AAA&
+    age=19&
+    date=2018-04-30&
+    time=17-18&
+    price=100-200
+
+###
+# 教师详情
+GET http://{{host}}/teachers/1
 
 ###
 # 学生预约教师

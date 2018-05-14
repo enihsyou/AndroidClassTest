@@ -6,7 +6,6 @@ plugins {
     id "org.jetbrains.kotlin.plugin.jpa" version "1.2.40"
     id "org.jetbrains.dokka" version "0.9.16"
 }
-
 group = 'com.enihsyou.collaboration'
 version = '0.0.1-SNAPSHOT'
 
