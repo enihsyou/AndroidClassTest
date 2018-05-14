@@ -108,13 +108,13 @@ Cookie: SESSION=YjFiMTkzNTktMDY5YS00NTQ2LWI3OWItZmJiOWUzMDdjZTk1; Path=/; HttpOn
 ###
 # 搜索教师，还有其他参数，看Controllers.kt
 GET http://{{host}}/teachers?
-#    grade=小六&
-#    subject=生物&
-#    name=AAA&
-#    age=19&
-#    date=2018-04-30&
-#    time=17-18&
-#    price=100-200
+    grade=小六&
+    subject=生物&
+    name=AAA&
+    age=19&
+    date=2018-04-30&
+    time=17-18&
+    price=100-200
 
 ###
 # 教师详情

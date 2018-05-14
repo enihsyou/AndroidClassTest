@@ -28,9 +28,13 @@ spring:
 server:
   http2:
     enabled: true
-  compression:
-    enabled: true
-    min-response-size: 1024
+#  compression:
+#    enabled: true
+#    min-response-size: 512
+
+server.compression.enabled: true
+server.compression.mime-types: application/json,application/xml,text/html,text/xml,text/plain
+server.compression.min-response-size: 102
 
 ---
 spring:

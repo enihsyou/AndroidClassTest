@@ -105,6 +105,7 @@ class QueryService(
 ) {
 
     fun detailTeacher(id: Long) = teacherRepository.loadById(id)
+
     fun queryTeachers(
         grade: String?, // 年级
         subject: String?, // 科目
@@ -140,11 +141,6 @@ class QueryService(
         studentRepository.save(student)
     }
 }
-
-@Service
-class ReservationService(
-    private val teacherRepository: YuTeacherRepository
-)
 
 @Component
 class UserAuthenticationProvider(
