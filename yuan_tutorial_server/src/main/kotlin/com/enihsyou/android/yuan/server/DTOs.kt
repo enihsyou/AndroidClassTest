@@ -22,7 +22,8 @@ data class TeacherRegistrationDTO(
     val birth: LocalDate,
     val phone: String,
     val price: BigDecimal,
-    val introduction: String
+    val introduction: String?,
+    val freetime: List<TeacherWorkStatusDTO>
 )
 
 data class StudentRegistrationDTO(
@@ -33,10 +34,6 @@ data class StudentRegistrationDTO(
 data class TeacherWorkStatusDTO(
     val start: Int,
     val end: Int
-)
-
-data class TeacherFreeTimeDTO(
-    val freetime: List<TeacherWorkStatusDTO>
 )
 
 data class ReservationDTO(

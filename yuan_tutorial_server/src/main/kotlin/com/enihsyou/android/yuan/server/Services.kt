@@ -20,7 +20,11 @@ class AccountService(
             ?.run { throw UsernameAlreadyExistException(username) }
         val password_ = PasswordUtil.encodePassword(teacherRegistrationDTO.password)
         val newTeacher = teacherRegistrationDTO
-            .run { YuTeacher(username, password_, grade, subject, name, birth, phone, price, introduction) }
+            .run {
+                YuTeacher(username, password_, grade, subject, name, birth, phone, price, introduction).also {teacher->
+                    teacher.freeTime.addAll(freetime.map { YuWorkStatus(teacher, it.start, it.end) })
+                }
+            }
         return teacherRepository.save(newTeacher)
     }
 
@@ -61,19 +65,8 @@ class AccountService(
 
 @Service
 class TeacherService(
-    private val teacherRepository: YuTeacherRepository,
-    private val workStatusRepository: YuWorkStatusRepository
+    private val teacherRepository: YuTeacherRepository
 ) {
-
-    fun replaceFreetime(teacherFreeTimeDTO: TeacherFreeTimeDTO, username: String) {
-        val teacher = teacherRepository.loadByUsername(username)
-        val map = teacherFreeTimeDTO.freetime.map {
-            YuWorkStatus(teacher, it.start, it.end)
-        }
-        teacher.freeTime.clear()
-        teacher.freeTime.addAll(map)
-        teacherRepository.save(teacher)
-    }
 
     fun loadTeacher(username: String): YuTeacher {
         return teacherRepository.loadByUsername(username)
@@ -84,7 +77,6 @@ class TeacherService(
 class StudentService(
     private val studentRepository: YuStudentRepository
 ) {
-
 
     fun loadStudent(username: String): YuStudent {
         return studentRepository.loadByUsername(username)

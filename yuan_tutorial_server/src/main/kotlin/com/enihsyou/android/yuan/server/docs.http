@@ -19,7 +19,17 @@ Content-Type: application/json
   "birth": "2018-05-01",
   "phone": "123456789",
   "price": 100,
-  "introduction": "我可去你x的吧"
+  "introduction": "我可去你x的吧",
+  "freetime": [
+    {
+      "start": 10,
+      "end": 11
+    },
+    {
+      "start": 11,
+      "end": 12
+    }
+  ]
 }
 
 ###
@@ -82,24 +92,7 @@ Content-Type: application/json
   "old": "111",
   "new": "112"
 }
-###
-# 修改教师空闲时间
-PUT http://{{host}}/account/teacher/freetime
-Cookie: SESSION=YjFiMTkzNTktMDY5YS00NTQ2LWI3OWItZmJiOWUzMDdjZTk1; Path=/; HttpOnly
-Content-Type: application/json
 
-{
-  "freetime": [
-    {
-      "start": 10,
-      "end": 11
-    },
-    {
-      "start": 11,
-      "end": 12
-    }
-  ]
-}
 ###
 # 学生支付订单
 POST http://{{host}}/account/student/orders?id=10

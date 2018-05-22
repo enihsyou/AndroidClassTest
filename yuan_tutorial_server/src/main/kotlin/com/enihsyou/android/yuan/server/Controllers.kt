@@ -50,12 +50,6 @@ class TeacherAccountController(
         val teacher = PermissionUtil.needTeacher().name
         accountService.passwordTeacher(passwordDTO, teacher)
     }
-
-    @PutMapping("freetime")
-    fun replaceFreeTime(@RequestBody teacherFreeTimeDTO: TeacherFreeTimeDTO) {
-        val teacher = PermissionUtil.needTeacher().name
-        teacherService.replaceFreetime(teacherFreeTimeDTO, teacher)
-    }
 }
 
 @RestController
